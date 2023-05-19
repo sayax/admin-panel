@@ -25,4 +25,4 @@ jobs:
         uses: JamesIves/github-pages-deploy-action@4.1.1
         with:
           branch: gh-pages # the branch the action should deploy to
-          folder: admin-panel/dist/admin-panel # the folder the action should deploy
+          folder: /dist/admin-panel # the folder the action should deploy
