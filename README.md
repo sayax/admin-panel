@@ -35,3 +35,5 @@ STEPS:
 6. Configure github Pages, set deploy branch gh-pages
 7. Update Page see Environments
 8. Add environments ng g environments
+9. login to firebase
+10. ng add @angular/fire
