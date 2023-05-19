@@ -29,6 +29,9 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 STEPS:
 1. Create GITHUB repo ex: name = admin-panel
 2. run ng new {name} --directory ./
-3. ng build --base-href /{name}/
+3. ng build --base-href /{name}/ # --output-path docs
 4. Configure worflow.yml
-5. Configure github Pages
+5. Grant access to workflow Settings -> Actions -> General -> Worflow Permissions -> read and write access
+6. Configure github Pages, set deploy branch gh-pages
+7. Update Page see Environments
+8. Add environments ng g environments

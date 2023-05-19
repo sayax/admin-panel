@@ -19,7 +19,7 @@ jobs:
 
       - name: Install and Build
         working-directory: ./
-        run: npm install && npm run build:prod && cp dist/admin-panel/index.html dist/admin-panel/404.html
+        run: npm install && npm run build:prod
 
       - name: Deploy
         uses: JamesIves/github-pages-deploy-action@4.1.1
