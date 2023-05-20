@@ -37,3 +37,4 @@ STEPS:
 8. Add environments ng g environments
 9. login to firebase
 10. ng add @angular/fire
+11. "@angular-devkit/build-angular": "^15.1.6" is essential, because @angular/fire wouldn't work on production with a 15.2
