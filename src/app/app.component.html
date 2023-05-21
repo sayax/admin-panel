@@ -1,15 +1,10 @@
 <nb-layout>
-
-  <nb-layout-header fixed>
-    <h1>Hello World</h1>
+  <nb-layout-header *ngIf="hasHeader$ | async" fixed>
+    <app-header></app-header>
   </nb-layout-header>
+  <nb-sidebar state="collapsed"></nb-sidebar>
 
   <nb-layout-column>
     <router-outlet></router-outlet>
-
   </nb-layout-column>
-
-  <nb-layout-footer fixed>
-  </nb-layout-footer>
-
 </nb-layout>
