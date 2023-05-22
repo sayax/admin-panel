@@ -1,7 +1,7 @@
 <button *ngIf="(isLoggedIn$ | async)" nbButton status="basic" size="tiny" class="burger" (click)="toggle()">
   <nb-icon icon="menu-outline"></nb-icon>
 </button>
-<h1>Admin</h1>
+<h1>{{ title$ | async }}</h1>
 <div class="navigation">
   <a *ngIf="!(isLoggedIn$ | async); else loggedIn" class="login" nbButton status="basic" size="tiny" [routerLink]="['/auth']">
     <nb-icon icon="person-outline"></nb-icon>

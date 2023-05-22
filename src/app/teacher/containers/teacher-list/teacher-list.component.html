@@ -1,0 +1,8 @@
+<nb-card size="small">
+  <nb-list>
+    <nb-list-item *ngFor="let teacher of list$ | async">
+      <nb-user [picture]="teacher.avatar_url" [name]="teacher.first_name + ' ' + teacher.last_name" [title]="'Преподаватель'">
+      </nb-user>
+    </nb-list-item>
+  </nb-list>
+</nb-card>

@@ -17,15 +17,15 @@ export class AppComponent {
     },
     {
       title: 'Список преподавателей',
-      link: '/teachers',
+      link: '/teacher',
     },
     {
       title: 'Список учеников',
-      link: '/students',
+      link: '/student',
     },
     {
       title: 'Контакты',
-      link: '/contacts',
+      link: '/contact',
     },
     {
       title: 'О нас',

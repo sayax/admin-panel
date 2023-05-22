@@ -84,17 +84,17 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
           },
           logout: {
             redirect: {
-              success: '',
+              success: '/',
             },
           },
           requestPassword: {
             redirect: {
-              success: 'auth',
+              success: '/auth',
             },
           },
           resetPassword: {
             redirect: {
-              success: 'auth',
+              success: '/auth',
             },
           },
         }),
