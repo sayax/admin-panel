@@ -11,7 +11,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideFunctions, getFunctions } from '@angular/fire/functions';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbIconModule, NbButtonModule, NbMenuModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbIconModule, NbButtonModule, NbMenuModule, NbUserModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HeaderComponent } from './shared/header/header.component';
 import { NbAuthModule } from '@nebular/auth';
@@ -105,6 +105,7 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     NbMenuModule.forRoot(),
     NbIconModule,
     NbButtonModule,
+    NbUserModule,
     NbEvaIconsModule,
   ],
   providers: [

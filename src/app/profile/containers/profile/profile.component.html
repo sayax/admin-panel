@@ -1,0 +1,26 @@
+<nb-card>
+  <form *ngIf="user$ | async as user" class="profile-form" [formGroup]="form">
+    <div class="profile-image">
+      <nb-user [picture]="user.avatar_urls[0]"  [name]="user.first_name + ' ' + user.last_name" showName="false"></nb-user>
+    </div>
+    <div class="profile-block">
+      <input nbInput placeholder="Имя" formControlName="first_name" />
+      <input nbInput placeholder="Фамилия" formControlName="last_name" />
+      <input nbInput placeholder="Отчество" formControlName="middle_name" />
+      <input nbInput placeholder="Телефон" formControlName="phone" />
+      <input nbInput placeholder="E-mail" formControlName="email" />
+      <nb-select placeholder="Select Gender" formControlName="gender">
+        <nb-option value="male">Male</nb-option>
+        <nb-option value="female">Female</nb-option>
+      </nb-select>
+      <textarea nbInput placeholder="Описание" formControlName="description"></textarea>
+      <textarea nbInput placeholder="Адрес" formControlName="address"></textarea>
+      <nb-checkbox formControlName="is_teacher">Преподаватель</nb-checkbox>
+      <nb-checkbox formControlName="is_student">Ученик</nb-checkbox>
+      <nb-checkbox formControlName="is_blocked">Заблокирован</nb-checkbox>
+      <div>
+        <button nbButton status="primary">Сохранить</button>
+      </div>
+    </div>
+  </form>
+</nb-card>

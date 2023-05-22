@@ -6,7 +6,7 @@
     <nb-menu [items]="items"></nb-menu>
   </nb-sidebar>
 
-  <nb-layout-column class="main-layout">
+  <nb-layout-column [class.main-layout]="hasHeader$ | async">
     <router-outlet></router-outlet>
   </nb-layout-column>
 </nb-layout>

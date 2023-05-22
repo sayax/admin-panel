@@ -1,0 +1,24 @@
+.profile-form {
+  display: grid;
+  grid-template-areas: 'image block';
+  grid-template-columns: 200px auto;
+  gap: 1rem;
+  padding: 1rem;
+}
+
+.profile-image {
+  grid-area: image;
+
+  nb-user {
+    --user-medium-width: 200px;
+    --user-medium-height: 200px;
+    --user-medium-initials-text-font-size: 54px;
+  }
+}
+
+.profile-block {
+  display: flex;
+  flex-direction: column;
+  grid-area: block;
+  row-gap: 0.625rem;
+}

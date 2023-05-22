@@ -1,7 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { NavigationEnd, Router } from '@angular/router';
 import { filter, map, Observable } from 'rxjs';
-import { NbSidebarService } from '@nebular/theme';
+import { NbMenuItem, NbSidebarService } from '@nebular/theme';
 
 @Component({
   selector: 'app-root',
@@ -10,26 +10,39 @@ import { NbSidebarService } from '@nebular/theme';
 })
 export class AppComponent {
   title = 'admin-panel';
-  items = [
+  items: NbMenuItem[] = [
     {
       title: 'Главная',
       link: '/',
     },
     {
+      title: 'Профиль',
+      link: '/profile',
+      pathMatch: 'full',
+    },
+    {
       title: 'Список преподавателей',
       link: '/teacher',
+      pathMatch: 'prefix',
     },
     {
       title: 'Список учеников',
       link: '/student',
+      pathMatch: 'full',
     },
     {
       title: 'Контакты',
       link: '/contact',
+      pathMatch: 'full',
     },
     {
       title: 'О нас',
       link: '/about',
+      pathMatch: 'full',
+    },
+    {
+      title: 'Выйти',
+      link: '/auth/logout',
     },
   ]
   private router = inject(Router);

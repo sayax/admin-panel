@@ -7,9 +7,7 @@
     <nb-icon icon="person-outline"></nb-icon>
   </a>
   <ng-template #loggedIn>
-    <a class="login" nbButton status="basic" size="tiny" [routerLink]="['/auth/logout']">
-      <nb-icon icon="person-outline"></nb-icon>
-      {{ user$ | async }}
-    </a>
+    <nb-user *ngIf="user$ | async as user" [picture]="user.avatar_urls[0]" [name]="user.first_name + ' ' + user.last_name">
+    </nb-user>
   </ng-template>
 </div>

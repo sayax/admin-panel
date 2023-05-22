@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, collection, getDocs, query, where } from '@angular/fire/firestore';
+import { Firestore, collection, doc, getDoc, getDocs, query, where } from '@angular/fire/firestore';
 import { Observable, from, map, switchMap } from 'rxjs';
 import { Teacher, TeacherDTO } from '../model/teacher';
 import { Collection } from '../model/collections';
@@ -40,6 +40,28 @@ export class TeacherApiService {
               }
             })
           })
+        )
+      })
+    )
+  }
+
+  getTeacher(uid: string): Observable<TeacherDTO> {
+    const ref = doc(this.teacherCollection, uid);
+    return from(getDoc(ref)).pipe(
+      map(data => data.data() as Teacher),
+      switchMap(teacher => {
+        return this.userApiService.getUser(teacher.profile_uid).pipe(
+          map(user => ({
+            uid: teacher.uid,
+            phone: user.phone,
+            email: user.email,
+            first_name: user.first_name,
+            middle_name: user.middle_name,
+            last_name: user.last_name,
+            avatar_url: user.avatar_urls[0],
+            start_date: teacher.start_date,
+            styles: teacher.styles,
+          }))
         )
       })
     )

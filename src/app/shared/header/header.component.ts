@@ -3,6 +3,7 @@ import { NbSidebarService } from '@nebular/theme';
 import { NbAuthService } from '@nebular/auth';
 import { map, filter, switchMap, of, startWith } from 'rxjs';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -12,13 +13,16 @@ import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 })
 export class HeaderComponent {
   private readonly sidebarService = inject(NbSidebarService);
-  private authService = inject(NbAuthService);
+  private nbAuthService = inject(NbAuthService);
   private route = inject(ActivatedRoute);
   private router = inject(Router);
+  private authService = inject(AuthService);
 
-  isLoggedIn$ = this.authService.isAuthenticated();
+  isLoggedIn$ = this.nbAuthService.isAuthenticated();
 
-  user$ = this.authService.getToken().pipe(map(user => user.getPayload().email));
+  user$ = this.nbAuthService.getToken().pipe(switchMap(user => {
+    return this.authService.getUser(user.getPayload().user_id);
+  }));
 
   title$ = this.router.events.pipe(
     filter(event => event instanceof NavigationEnd),
@@ -30,10 +34,7 @@ export class HeaderComponent {
       }
       return route?.data ?? of({ title: 'Admin' });
     }),
-    map(data => {
-      console.log(data)
-      return data['title']
-    }),
+    map(data => data['title']),
   )
 
   toggle() {
