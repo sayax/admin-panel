@@ -2,3 +2,7 @@ nb-sidebar,
 nb-sidebar > div.main-container {
   transition: width 0.3s;
 }
+
+.main-layout {
+  --layout-padding: 1rem;
+}

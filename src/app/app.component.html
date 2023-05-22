@@ -2,9 +2,11 @@
   <nb-layout-header *ngIf="hasHeader$ | async" fixed>
     <app-header></app-header>
   </nb-layout-header>
-  <nb-sidebar state="collapsed"></nb-sidebar>
+  <nb-sidebar state="collapsed">
+    <nb-menu [items]="items"></nb-menu>
+  </nb-sidebar>
 
-  <nb-layout-column>
+  <nb-layout-column class="main-layout">
     <router-outlet></router-outlet>
   </nb-layout-column>
 </nb-layout>

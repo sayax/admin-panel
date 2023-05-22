@@ -1,12 +1,15 @@
-<button *ngIf="(isLoggedIn$ | async)" nbButton status="basic" size="tiny" (click)="toggle()">
+<button *ngIf="(isLoggedIn$ | async)" nbButton status="basic" size="tiny" class="burger" (click)="toggle()">
   <nb-icon icon="menu-outline"></nb-icon>
 </button>
 <h1>Admin</h1>
 <div class="navigation">
-  <a *ngIf="!(isLoggedIn$ | async)" class="login" nbButton status="primary" size="tiny" [routerLink]="['/auth']">
-    Log in
+  <a *ngIf="!(isLoggedIn$ | async); else loggedIn" class="login" nbButton status="basic" size="tiny" [routerLink]="['/auth']">
+    <nb-icon icon="person-outline"></nb-icon>
   </a>
-  <a *ngIf="(isLoggedIn$ | async)" class="login" nbButton status="primary" size="tiny" [routerLink]="['/auth/logout']">
-    Log out
-  </a>
+  <ng-template #loggedIn>
+    <a class="login" nbButton status="basic" size="tiny" [routerLink]="['/auth/logout']">
+      <nb-icon icon="person-outline"></nb-icon>
+      {{ user$ | async }}
+    </a>
+  </ng-template>
 </div>

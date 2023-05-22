@@ -10,6 +10,28 @@ import { NbSidebarService } from '@nebular/theme';
 })
 export class AppComponent {
   title = 'admin-panel';
+  items = [
+    {
+      title: 'Главная',
+      link: '/',
+    },
+    {
+      title: 'Список преподавателей',
+      link: '/teachers',
+    },
+    {
+      title: 'Список учеников',
+      link: '/students',
+    },
+    {
+      title: 'Контакты',
+      link: '/contacts',
+    },
+    {
+      title: 'О нас',
+      link: '/about',
+    },
+  ]
   private router = inject(Router);
   private readonly sidebarService = inject(NbSidebarService);
 

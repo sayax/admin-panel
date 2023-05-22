@@ -7,3 +7,27 @@
 .navigation {
   margin-left: auto;
 }
+
+.burger {
+  --button-filled-basic-background-color: transparent;
+  --button-filled-basic-hover-background-color: transparent;
+  --button-filled-basic-focus-background-color: transparent;
+
+  margin-right: 16px;
+
+  nb-icon {
+    --button-tiny-icon-size: 20px;
+  }
+}
+
+.login {
+  --button-filled-basic-background-color: transparent;
+  --button-filled-basic-hover-background-color: transparent;
+  --button-filled-basic-focus-background-color: transparent;
+
+  text-transform: lowercase;
+
+  nb-icon {
+    --button-tiny-icon-size: 20px;
+  }
+}
