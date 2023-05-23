@@ -1,8 +1,52 @@
 <nb-card size="large">
-  <nb-list>
-    <nb-list-item *ngFor="let teacher of list$ | async">
-      <nb-user [picture]="(teacher.avatar_url | mediaUrl | async) || ''" [name]="teacher.first_name + ' ' + teacher.last_name" [title]="'Преподаватель'">
-      </nb-user>
-    </nb-list-item>
-  </nb-list>
+  <nb-card-header>
+    <button nbButton status="primary" type="button" (click)="openDialog(dialog)">Добавить преподавателя</button>
+  </nb-card-header>
+  <nb-card-body>
+    <ng-container *ngIf="list$ | async as list">
+      <nb-list *ngIf="list.length; else noTeachers">
+        <nb-list-item *ngFor="let teacher of list">
+          <nb-user [picture]="(teacher.avatar_url | mediaUrl | async) || ''" [name]="teacher.first_name + ' ' + teacher.last_name" [title]="teacher.level + ' преподаватель'">
+          </nb-user>
+          <button nbButton type="button" class="teacher-delete-button" [disabled]="loading" nbTooltip="Удалить преподавателя" nbTooltipStatus="primary" (click)="removeTeacher(teacher)">
+            <nb-icon icon="trash-outline"></nb-icon>
+          </button>
+        </nb-list-item>
+      </nb-list>
+    </ng-container>
+    <ng-template #noTeachers>
+      <p>Добавьте преподавателей</p>
+    </ng-template>
+  </nb-card-body>
 </nb-card>
+<ng-template #dialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Добавить преподавателя</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label for="uid">Пользователь</label>
+          <nb-select placeholder="Выберите пользователя" name="uid" [status]="form.get('uid')?.touched ? (form.get('uid')?.invalid  ? 'danger' : 'success') : 'basic'" formControlName="uid">
+            <nb-option *ngFor="let user of users$ | async" [value]="user.uid">{{ user.first_name }} {{user.last_name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <label for="styles">Стили</label>
+          <nb-select multiple placeholder="Выберите стили" name="styles" [status]="form.get('styles')?.touched ? (form.get('styles')?.invalid  ? 'danger' : 'success') : 'basic'" formControlName="styles">
+            <nb-option *ngFor="let style of styles" [value]="style.value">{{ style.title }}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <label for="level">Уровень</label>
+          <nb-select placeholder="Выберите уровень" name="level" [status]="form.get('level')?.touched ? (form.get('level')?.invalid  ? 'danger' : 'success') : 'basic'" formControlName="level">
+            <nb-option *ngFor="let level of levels" [value]="level.value">{{ level.title }}</nb-option>
+          </nb-select>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer>
+      <button nbButton (click)="ref.close()">Отмена</button>
+      <button nbButton status="primary" [disabled]="loading" (click)="addTeacher(form)">Сохранить</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

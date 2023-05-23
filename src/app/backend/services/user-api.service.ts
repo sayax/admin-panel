@@ -11,6 +11,20 @@ export class UserApiService {
   private firestore: Firestore = inject(Firestore);
   private profileCollection = collection(this.firestore, Collection.PROFILE);
 
+  getUsers(): Observable<ProfileDTO[]> {
+    const usersQuery = query(this.profileCollection);
+    return from(getDocs(usersQuery)).pipe(
+      map(data => data.docs.map(doc => doc.data() as ProfileDTO)),
+    )
+  }
+
+  getUsersNotTeachers(): Observable<ProfileDTO[]> {
+    const usersQuery = query(this.profileCollection, where('is_blocked', '==', false), where('is_teacher', '==', false));
+    return from(getDocs(usersQuery)).pipe(
+      map(data => data.docs.map(doc => doc.data() as ProfileDTO)),
+    )
+  }
+
   getUsersInList(uids: string[]): Observable<ProfileDTO[]> {
     if (!uids || !uids.length) {
       return of([]);

@@ -2,8 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeacherListComponent } from './teacher-list.component';
 import { RouterModule } from '@angular/router';
-import { NbCardModule, NbListModule, NbUserModule } from '@nebular/theme';
+import { NbButtonModule, NbCardModule, NbDialogModule, NbIconModule, NbInputModule, NbListModule, NbSelectModule, NbTooltipModule, NbUserModule } from '@nebular/theme';
 import { SharedModule } from 'src/app/shared/shared.module';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 
@@ -16,6 +17,13 @@ import { SharedModule } from 'src/app/shared/shared.module';
     NbListModule,
     NbCardModule,
     NbUserModule,
+    NbButtonModule,
+    NbSelectModule,
+    NbInputModule,
+    NbIconModule,
+    NbTooltipModule,
+    ReactiveFormsModule,
+    NbDialogModule.forChild(),
     SharedModule,
     RouterModule.forChild([
       {

@@ -1,0 +1,26 @@
+:host {
+  nb-user {
+    ::ng-deep {
+      .user-title {
+        text-transform: capitalize;
+      }
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 0.625rem;
+}
+
+.teacher-delete-button {
+  --button-filled-basic-background-color: transparent;
+  --button-filled-basic-hover-background-color: transparent;
+  --button-filled-basic-focus-background-color: transparent;
+
+  margin-left: auto;
+}
+
+nb-card-footer {
+  display: flex;
+  justify-content: space-between;
+}

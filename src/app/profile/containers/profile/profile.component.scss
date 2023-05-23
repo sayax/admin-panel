@@ -40,18 +40,3 @@
   grid-area: block;
   row-gap: 0.625rem;
 }
-
-.form-group {
-  display: flex;
-  column-gap: 0.625rem;
-  align-items: flex-start;
-  justify-content: space-between;
-
-  label {
-    width: 100px;
-  }
-
-  input, textarea, select {
-    width: 100%;
-  }
-}

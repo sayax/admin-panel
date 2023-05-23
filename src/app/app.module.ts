@@ -11,7 +11,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideFunctions, getFunctions } from '@angular/fire/functions';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbIconModule, NbButtonModule, NbMenuModule, NbUserModule, NbToastrModule, NbGlobalPositionStrategy, NbGlobalPhysicalPosition } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbIconModule, NbButtonModule, NbMenuModule, NbUserModule, NbToastrModule, NbGlobalPositionStrategy, NbGlobalPhysicalPosition, NbDialogModule } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HeaderComponent } from './shared/header/header.component';
 import { NbAuthModule } from '@nebular/auth';
@@ -104,6 +104,9 @@ import { SharedModule } from './shared/shared.module';
     NbLayoutModule,
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
+    NbDialogModule.forRoot({
+      closeOnBackdropClick: true,
+    }),
     NbToastrModule.forRoot({
       duration: 2000,
       position: NbGlobalPhysicalPosition.TOP_RIGHT,
