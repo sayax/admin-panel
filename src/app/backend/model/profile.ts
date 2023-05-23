@@ -1,6 +1,8 @@
+import { Timestamp } from "@angular/fire/firestore";
+
 export interface ProfileDTO {
-  created_on: Date;
-  updated_on: Date;
+  created_on: Timestamp;
+  updated_on: Timestamp;
   uid: string;
   phone: string;
   email: string;

@@ -4,6 +4,7 @@ import { ProfileComponent } from './containers/profile/profile.component';
 import { RouterModule } from '@angular/router';
 import { NbButtonModule, NbCardModule, NbCheckboxModule, NbInputModule, NbSelectModule, NbUserModule } from '@nebular/theme';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -20,6 +21,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NbCheckboxModule,
     NbSelectModule,
     NbUserModule,
+    SharedModule,
     RouterModule.forChild([
       {
         path: '',

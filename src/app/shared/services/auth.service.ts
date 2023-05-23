@@ -12,4 +12,8 @@ export class AuthService {
   getUser(uid: string): Observable<ProfileDTO> {
     return this.userApiService.getUser(uid);
   }
+
+  getUserChanges(uid: string): Observable<ProfileDTO> {
+    return this.userApiService.getUserChanges(uid);
+  }
 }

@@ -7,7 +7,7 @@
     <nb-icon icon="person-outline"></nb-icon>
   </a>
   <ng-template #loggedIn>
-    <nb-user *ngIf="user$ | async as user" [picture]="user.avatar_urls[0]" [name]="user.first_name + ' ' + user.last_name">
+    <nb-user *ngIf="user$ | async as user" [picture]="user.avatar_urls ? ((user.avatar_urls[0] | mediaUrl | async) || '') : ''" [name]="user.first_name + ' ' + user.last_name">
     </nb-user>
   </ng-template>
 </div>

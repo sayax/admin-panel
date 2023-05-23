@@ -11,12 +11,13 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideFunctions, getFunctions } from '@angular/fire/functions';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbIconModule, NbButtonModule, NbMenuModule, NbUserModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbIconModule, NbButtonModule, NbMenuModule, NbUserModule, NbToastrModule, NbGlobalPositionStrategy, NbGlobalPhysicalPosition } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HeaderComponent } from './shared/header/header.component';
 import { NbAuthModule } from '@nebular/auth';
 import { NbFirebasePasswordStrategy, NbFirebaseAuthModule } from '@nebular/firebase-auth';
 import { FIREBASE_OPTIONS } from '@angular/fire/compat';
+import { SharedModule } from './shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -103,10 +104,15 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
     NbLayoutModule,
     NbSidebarModule.forRoot(),
     NbMenuModule.forRoot(),
+    NbToastrModule.forRoot({
+      duration: 2000,
+      position: NbGlobalPhysicalPosition.TOP_RIGHT,
+    }),
     NbIconModule,
     NbButtonModule,
     NbUserModule,
     NbEvaIconsModule,
+    SharedModule,
   ],
   providers: [
     { provide: FIREBASE_OPTIONS, useValue: environment.firebase }

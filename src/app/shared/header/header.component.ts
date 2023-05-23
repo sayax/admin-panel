@@ -21,7 +21,7 @@ export class HeaderComponent {
   isLoggedIn$ = this.nbAuthService.isAuthenticated();
 
   user$ = this.nbAuthService.getToken().pipe(switchMap(user => {
-    return this.authService.getUser(user.getPayload().user_id);
+    return this.authService.getUserChanges(user.getPayload().user_id);
   }));
 
   title$ = this.router.events.pipe(
