@@ -1,0 +1,94 @@
+<nb-card>
+  <nb-card-header>
+    <button nbButton status="primary" type="button" (click)="openDialog(calendarDialog)">Добавить</button>
+    <nb-select name="view" [selected]="view" (selectedChange)="selectView($event)">
+      <nb-option *ngFor="let option of calendarViewOptions" [value]="option">{{ option }}</nb-option>
+    </nb-select>
+  </nb-card-header>
+  <nb-card-body [ngSwitch]="view">
+    <app-calendar-header [(view)]="view" [(viewDate)]="viewDate">
+    </app-calendar-header>
+    <mwl-calendar-month-view
+      *ngSwitchCase="'month'"
+      precision="minutes"
+      [viewDate]="viewDate"
+      [activeDayIsOpen]="activeDayIsOpen"
+      [events]="(events$ | async) || []"
+      (dayClicked)="dayClicked($event.day)"
+      (eventClicked)="openShowInfo(showInfo, $event.event)"
+    >
+    </mwl-calendar-month-view>
+    <mwl-calendar-week-view
+      *ngSwitchCase="'week'"
+      precision="minutes"
+      [viewDate]="viewDate"
+      [events]="(events$ | async) || []"
+      (eventClicked)="openShowInfo(showInfo, $event.event)"
+    >
+    </mwl-calendar-week-view>
+    <mwl-calendar-day-view
+      *ngSwitchCase="'day'"
+      precision="minutes"
+      [viewDate]="viewDate"
+      [events]="(events$ | async) || []"
+      (eventClicked)="openShowInfo(showInfo, $event.event)"
+    >
+    </mwl-calendar-day-view>
+  </nb-card-body>
+</nb-card>
+
+<ng-template #calendarDialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Добавить в расписание</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label for="title">Название</label>
+          <input name="title" nbInput formControlName="title">
+        </div>
+        <div class="form-group">
+          <label for="teacher_uids">Преподаватели</label>
+          <nb-select multiple placeholder="Выберите преподавателей" name="teacher_uids" [status]="form.get('teacher_uids')?.touched ? (form.get('teacher_uids')?.invalid  ? 'danger' : 'success') : 'basic'" formControlName="teacher_uids">
+            <nb-option *ngFor="let user of users$ | async" [value]="user.uid">{{ user.first_name }} {{user.last_name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <label for="colors">Цвет</label>
+          <nb-select placeholder="Выберите цвет" name="colors" [status]="form.get('colors')?.touched ? (form.get('colors')?.invalid  ? 'danger' : 'success') : 'basic'" formControlName="colors">
+            <nb-option *ngFor="let color of colorOptions" [value]="color">{{ color }}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <label for="start_date">Начало</label>
+          <input name="start_date" nbInput placeholder="Выберите дату" [nbDatepicker]="startDatePicker" formControlName="start_date">
+          <nb-date-timepicker
+            #startDatePicker
+            singleColumn
+            [step]="30"></nb-date-timepicker>
+        </div>
+        <div class="form-group">
+          <label for="end_date">Окончание</label>
+          <input name="end_date" nbInput placeholder="Выберите дату" [nbDatepicker]="endDatePicker" formControlName="end_date">
+          <nb-date-timepicker
+            #endDatePicker
+            singleColumn
+            [step]="30"></nb-date-timepicker>
+        </div>
+        <nb-checkbox formControlName="allDay">Весь день</nb-checkbox>
+      </form>
+    </nb-card-body>
+    <nb-card-footer class="footer">
+      <button nbButton (click)="ref.close()">Отмена</button>
+      <button nbButton status="primary" [disabled]="loading" (click)="addEvent(form)">Сохранить</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
+
+<ng-template #showInfo let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Информация</nb-card-header>
+    <nb-card-body>
+
+    </nb-card-body>
+  </nb-card>
+</ng-template>

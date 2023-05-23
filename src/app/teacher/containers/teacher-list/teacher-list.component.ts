@@ -5,6 +5,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Observable } from 'rxjs';
 import { DanceLevel, DanceStyle, Teacher, TeacherDTO } from 'src/app/backend/model/teacher';
 import { ProfileDTO } from 'src/app/backend/model/profile';
+import { LEVELS, STYLES } from '../../utils/teacher';
 
 @Component({
   selector: 'app-teacher-list',
@@ -20,39 +21,9 @@ export class TeacherListComponent implements OnInit {
   private cdr = inject(ChangeDetectorRef);
   loading = false;
 
-  styles = [
-    {
-      value: DanceStyle.kizomba,
-      title: 'Кизомба',
-    },
-    {
-      value: DanceStyle.salsa,
-      title: 'Сальса',
-    },
-    {
-      value: DanceStyle.bachata,
-      title: 'Бачата',
-    },
-  ]
+  styles = STYLES;
 
-  levels = [
-    {
-      value: DanceLevel.beginner,
-      title: 'Начинающий',
-    },
-    {
-      value: DanceLevel.intermediate,
-      title: 'Средний',
-    },
-    {
-      value: DanceLevel.advanced,
-      title: 'Высокий',
-    },
-    {
-      value: DanceLevel.pro,
-      title: 'Профи',
-    },
-  ]
+  levels = LEVELS;
 
   list$!: Observable<TeacherDTO[]>;
   users$!: Observable<ProfileDTO[]>;

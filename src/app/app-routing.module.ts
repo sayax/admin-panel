@@ -21,6 +21,11 @@ const routes: Routes = [
     loadChildren: () => import('./teacher/teacher.module').then(m => m.TeacherModule),
     canActivate: [AuthenticatedGuard],
   },
+  {
+    path: 'calendar',
+    loadChildren: () => import('./calendar/calendar.module').then(m => m.AppCalendarModule),
+    canActivate: [AuthenticatedGuard],
+  },
 ];
 
 @NgModule({

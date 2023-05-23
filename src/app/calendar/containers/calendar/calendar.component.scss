@@ -1,0 +1,35 @@
+:host {
+  nb-card-header {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  ::ng-deep {
+
+    .cal-week-view .cal-time-events .cal-day-column {
+      margin-right: 10px;
+    }
+
+    .cal-week-view .cal-hour {
+      width: calc(100% + 10px);
+    }
+
+    mwl-calendar-month-view {
+      .cal-event-action {
+        margin: 0 10px;
+        color: var(--button-filled-primary-text-color);
+      }
+    }
+    mwl-calendar-week-view,
+    mwl-calendar-day-view {
+      .cal-event-action {
+        margin-right: 4px;
+        color: var(--button-outline-primary-text-color);
+      }
+    }
+  }
+}
+
+.form-group {
+  margin-bottom: 0.625rem;
+}
