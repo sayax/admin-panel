@@ -1,4 +1,4 @@
-import { Component, OnInit, TemplateRef, inject } from '@angular/core';
+import { Component, HostListener, OnInit, TemplateRef, inject } from '@angular/core';
 import { CalendarDateFormatter, CalendarEvent, CalendarEventAction, CalendarEventTitleFormatter, CalendarView } from 'angular-calendar';
 import { CalendarService } from '../../services/calendar.service';
 import { CustomEventTitleFormatter, DateFormatterService } from '../../services/date-formatter.service';
@@ -70,7 +70,15 @@ export class CalendarComponent implements OnInit {
   users$!: Observable<TeacherDTO[]>;
   selectedEvent!: CalendarEvent;
 
+
+  @HostListener('window:resize', ['$event']) calculateRows() {
+    if (window.innerWidth < 768) {
+      this.view = CalendarView.Day;
+    }
+  }
+
   ngOnInit(): void {
+    this.calculateRows();
     this.getData();
   }
 

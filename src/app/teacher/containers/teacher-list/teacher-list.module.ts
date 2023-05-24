@@ -30,7 +30,7 @@ import { ReactiveFormsModule } from '@angular/forms';
         path: '',
         component: TeacherListComponent,
         data: {
-          title: 'Список преподавателей',
+          title: 'Преподаватели',
         }
       },
     ]),

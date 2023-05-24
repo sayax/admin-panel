@@ -12,7 +12,6 @@ export class AuthenticatedGuard implements CanActivate {
   canActivate(
     route: ActivatedRouteSnapshot,
     state: RouterStateSnapshot): Observable<boolean> {
-      console.log(route, state);
     return this.authService.isAuthenticated().pipe(
       tap(authenticated => {
         if (!authenticated) {

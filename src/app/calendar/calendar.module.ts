@@ -25,6 +25,7 @@ import { SharedModule } from '../shared/shared.module';
     NbIconModule,
     NbInputModule,
     NbListModule,
+    NbIconModule,
     NbDatepickerModule,
     ReactiveFormsModule,
     SharedModule,

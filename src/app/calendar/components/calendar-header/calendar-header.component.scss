@@ -1,5 +1,6 @@
 .header{
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   margin-bottom: 0.625rem;
 }
@@ -7,6 +8,12 @@
 .btn-group {
   display: flex;
   align-items: center;
+
+  @media screen and (max-width: 768px) {
+    justify-content: center;
+    flex: 1 100%;
+    margin-bottom: 0.625rem;
+  }
 }
 
 .btn {
@@ -45,6 +52,10 @@
   background-color: var(--button-filled-primary-background-color);
   border-color: var(--button-filled-primary-border-color);
   color: var(--button-filled-primary-text-color);
+
+  @media screen and (max-width: 768px) {
+    --button-filled-medium-padding: 4px;
+  }
 }
 
 .col-md-4 {

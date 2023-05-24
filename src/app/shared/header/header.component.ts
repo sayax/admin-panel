@@ -1,7 +1,7 @@
-import { Component, inject, ChangeDetectionStrategy } from '@angular/core';
+import { Component, inject, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { NbSidebarService } from '@nebular/theme';
 import { NbAuthService } from '@nebular/auth';
-import { map, filter, switchMap, of, startWith } from 'rxjs';
+import { map, filter, switchMap, of, startWith, tap } from 'rxjs';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
@@ -11,7 +11,7 @@ import { AuthService } from '../services/auth.service';
   styleUrls: ['./header.component.scss'],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   private readonly sidebarService = inject(NbSidebarService);
   private nbAuthService = inject(NbAuthService);
   private route = inject(ActivatedRoute);
@@ -37,6 +37,15 @@ export class HeaderComponent {
     }),
     map(data => data['title']),
   )
+
+  ngOnInit(): void {
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd),
+      tap(() => {
+        this.sidebarService.collapse();
+      }),
+    ).subscribe()
+  }
 
   toggle() {
     this.sidebarService.toggle();

@@ -1,7 +1,7 @@
 <nb-card>
   <nb-card-header>
     <button nbButton status="primary" type="button" (click)="openDialog(calendarDialog)">Добавить</button>
-    <nb-select name="view" [selected]="view" (selectedChange)="selectView($event)">
+    <nb-select class="desktop" name="view" [selected]="view" (selectedChange)="selectView($event)">
       <nb-option *ngFor="let option of calendarViewOptions" [value]="option">{{ option }}</nb-option>
     </nb-select>
   </nb-card-header>

@@ -3,7 +3,7 @@
     <div class="btn-group">
       <div class="btn btn-primary" mwlCalendarPreviousView [view]="view" [(viewDate)]="viewDate"
         (viewDateChange)="viewDateChange.next(viewDate)">
-        Предыдущий
+        <nb-icon icon="arrow-ios-back-outline"></nb-icon>
       </div>
       <div class="btn btn-outline-secondary" mwlCalendarToday [(viewDate)]="viewDate"
         (viewDateChange)="viewDateChange.next(viewDate)">
@@ -11,7 +11,7 @@
       </div>
       <div class="btn btn-primary" mwlCalendarNextView [view]="view" [(viewDate)]="viewDate"
         (viewDateChange)="viewDateChange.next(viewDate)">
-        Следующий
+        <nb-icon icon="arrow-ios-forward-outline"></nb-icon>
       </div>
     </div>
   </div>

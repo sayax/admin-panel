@@ -55,3 +55,29 @@ nb-card-footer {
   display: flex;
   justify-content: space-between;
 }
+
+@media screen and (max-width: 768px) {
+  nb-card-header {
+    flex-direction: column;
+
+    button {
+      margin-bottom: 0.5rem;
+    }
+  }
+
+  .desktop {
+    display: none;
+  }
+
+  nb-list-item {
+    flex-direction: column;
+
+    div {
+      text-align: center;
+
+      &:last-child {
+        text-align: center;
+      }
+    }
+  }
+}

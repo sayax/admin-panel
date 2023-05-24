@@ -40,3 +40,20 @@
   grid-area: block;
   row-gap: 0.625rem;
 }
+
+@media screen and (max-width: 768px) {
+  .profile-form {
+    grid-template-areas: 'image' 'block';
+    grid-template-columns: 1fr;
+  }
+
+  .profile-image {
+    align-items: center;
+  }
+
+  button {
+    &.status-primary {
+      width: 100%;
+    }
+  }
+}
