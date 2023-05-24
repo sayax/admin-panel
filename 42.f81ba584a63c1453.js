@@ -1,0 +1,2 @@
+"use strict";(self.webpackChunkadmin_panel=self.webpackChunkadmin_panel||[]).push([[42],{3042:(e,a,l)=>{l.r(a),l.d(a,{TeacherModule:()=>n});var d=l(7091),o=l(2560);const h=[{path:"",redirectTo:"list",pathMatch:"full"},{path:"list",loadChildren:()=>Promise.all([l.e(592),l.e(655)]).then(l.bind(l,1655)).then(t=>t.TeacherListModule)}];class n{}n.\u0275fac=function(s){return new(s||n)},n.\u0275mod=o.oAB({type:n}),n.\u0275inj=o.cJS({imports:[d.Bz.forChild(h)]})}}]);
+//# sourceMappingURL=42.f81ba584a63c1453.js.map
