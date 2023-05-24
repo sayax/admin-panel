@@ -33,3 +33,25 @@
 .form-group {
   margin-bottom: 0.625rem;
 }
+
+nb-list-item {
+  --list-item-padding: 0.625rem 0;
+  --list-item-divider-width: 0;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+
+  div {
+    width: 200px;
+
+    &:last-child {
+      text-align: right;
+    }
+  }
+}
+
+nb-card-footer {
+  display: flex;
+  justify-content: space-between;
+}

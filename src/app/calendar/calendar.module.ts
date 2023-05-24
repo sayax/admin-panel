@@ -6,6 +6,7 @@ import { CalendarModule } from 'angular-calendar';
 import { NbButtonModule, NbCardModule, NbCheckboxModule, NbDatepickerModule, NbIconModule, NbInputModule, NbListModule, NbSelectModule } from '@nebular/theme';
 import { CalendarHeaderComponent } from './components/calendar-header/calendar-header.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { SharedModule } from '../shared/shared.module';
 
 
 
@@ -26,6 +27,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     NbListModule,
     NbDatepickerModule,
     ReactiveFormsModule,
+    SharedModule,
     RouterModule.forChild([
       {
         path: '',

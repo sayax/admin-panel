@@ -6,12 +6,15 @@ import { EventsService } from 'src/app/backend/services/events.service';
 import { colors } from '../utils/colors';
 import { Timestamp } from '@angular/fire/firestore';
 import { NbAuthService } from '@nebular/auth';
+import { UserApiService } from 'src/app/backend/services/user-api.service';
+import { ProfileDTO } from 'src/app/backend/model/profile';
 
 @Injectable({
   providedIn: 'root',
 })
 export class CalendarService {
   private eventApiService = inject(EventsService);
+  private userApiService = inject(UserApiService);
   private nbAuthService = inject(NbAuthService);
 
   getEvents(): Observable<CalendarEvent[]> {
@@ -35,6 +38,10 @@ export class CalendarService {
 
   removeEvent(event: Partial<ICalendarEvent>): Observable<void> {
     return this.eventApiService.removeEvent(event);
+  }
+
+  getUsersByIds(uids: string[]): Observable<ProfileDTO[]> {
+    return this.userApiService.getUsersInList(uids);
   }
 
   private convertEventToCalendar(event: ICalendarEvent): CalendarEvent {

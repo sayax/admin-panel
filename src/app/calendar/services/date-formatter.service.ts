@@ -4,12 +4,16 @@ import { CalendarDateFormatter, CalendarEvent, CalendarEventTitleFormatter, Date
 
 @Injectable()
 export class DateFormatterService extends CalendarDateFormatter {
+  public override monthViewColumnHeader({ date, locale }: DateFormatterParams): string {
+    return formatDate(date, 'EEEE', 'en');
+  }
 
   public override dayViewHour({ date, locale }: DateFormatterParams): string {
-    return formatDate(date, 'HH:mm', locale || 'ru');
+    return formatDate(date, 'HH:mm', 'en');
   }
 
   public override weekViewHour({ date, locale }: DateFormatterParams): string {
+    console.log(date, locale)
     return this.dayViewHour({ date, locale });
   }
 }

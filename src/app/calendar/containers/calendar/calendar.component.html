@@ -15,7 +15,7 @@
       [activeDayIsOpen]="activeDayIsOpen"
       [events]="(events$ | async) || []"
       (dayClicked)="dayClicked($event.day)"
-      (eventClicked)="openShowInfo(showInfo, $event.event)"
+      (eventClicked)="openDialog(showInfo, $event.event)"
     >
     </mwl-calendar-month-view>
     <mwl-calendar-week-view
@@ -23,7 +23,7 @@
       precision="minutes"
       [viewDate]="viewDate"
       [events]="(events$ | async) || []"
-      (eventClicked)="openShowInfo(showInfo, $event.event)"
+      (eventClicked)="openDialog(showInfo, $event.event)"
     >
     </mwl-calendar-week-view>
     <mwl-calendar-day-view
@@ -31,7 +31,7 @@
       precision="minutes"
       [viewDate]="viewDate"
       [events]="(events$ | async) || []"
-      (eventClicked)="openShowInfo(showInfo, $event.event)"
+      (eventClicked)="openDialog(showInfo, $event.event)"
     >
     </mwl-calendar-day-view>
   </nb-card-body>
@@ -88,7 +88,25 @@
   <nb-card>
     <nb-card-header>Информация</nb-card-header>
     <nb-card-body>
-
+      <nb-list>
+        <nb-list-item>
+          <div class="title">Название:</div> <div class="value">{{ data.title }}</div>
+        </nb-list-item>
+        <nb-list-item *ngIf="data.meta.teacher_uids">
+          <div class="title">Преподаватели:</div>
+          <div class="value">
+            <div *ngFor="let uid of data.meta.teacher_uids">
+              <span *ngIf="uid | user | async as user">{{ user?.first_name }} {{ user?.last_name }} </span>
+            </div>
+          </div>
+        </nb-list-item>
+        <nb-list-item>
+          <div class="title">Начало:</div> <div class="value">{{ data.start | date: 'dd.MM.yyyy HH:mm' }}</div>
+        </nb-list-item>
+        <nb-list-item *ngIf="data.end">
+          <div class="title">Окончание:</div> <div class="value">{{ data.end | date: 'dd.MM.yyyy HH:mm' }}</div>
+        </nb-list-item>
+      </nb-list>
     </nb-card-body>
   </nb-card>
 </ng-template>

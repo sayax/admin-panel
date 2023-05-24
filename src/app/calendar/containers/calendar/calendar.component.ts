@@ -43,17 +43,10 @@ export class CalendarComponent implements OnInit {
   view: CalendarView = CalendarView.Month;
   actions: CalendarEventAction[] = [
     {
-      label: 'Edit',
-      a11yLabel: 'Edit',
+      label: 'Удалить',
+      a11yLabel: 'Удалить',
       onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Edited', event);
-      },
-    },
-    {
-      label: 'Delete',
-      a11yLabel: 'Delete',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.handleEvent('Deleted', event);
+        this.deleteEvent(event);
       },
     },
   ];
@@ -88,21 +81,21 @@ export class CalendarComponent implements OnInit {
     this.users$ = this.teacherService.getList();
   }
 
-  handleEvent(type: string, event: CalendarEvent) {
-    console.log(type, event);
+  deleteEvent(event: CalendarEvent) {
+    this.calendarService.removeEvent({ uid: `${event.id}` }).subscribe(() => {
+      this.toastr.show('Событие удалено', 'Данные сохранены', { status: 'success' });
+      this.getData();
+    });
   }
 
   selectView(event: CalendarView) {
     this.view = event;
   }
 
-  openDialog(dialog: TemplateRef<any>) {
-    this.ref = this.dialogService.open(dialog);
-  }
-
-  openShowInfo(dialog: TemplateRef<any>, event: CalendarEvent) {
-    this.openDialog(dialog);
-    this.selectedEvent = event;
+  openDialog(dialog: TemplateRef<any>, context?: any) {
+    this.ref = this.dialogService.open(dialog, {
+      context,
+    });
   }
 
   addEvent(form: FormGroup) {

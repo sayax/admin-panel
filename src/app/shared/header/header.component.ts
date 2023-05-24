@@ -21,6 +21,7 @@ export class HeaderComponent {
   isLoggedIn$ = this.nbAuthService.isAuthenticated();
 
   user$ = this.nbAuthService.getToken().pipe(switchMap(user => {
+    console.log({ user })
     return this.authService.getUserChanges(user.getPayload().user_id);
   }));
 
