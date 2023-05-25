@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProfileComponent } from './containers/profile/profile.component';
 import { RouterModule } from '@angular/router';
-import { NbButtonModule, NbCardModule, NbCheckboxModule, NbInputModule, NbSelectModule, NbUserModule } from '@nebular/theme';
+import { NbButtonModule, NbCardModule, NbCheckboxModule, NbInputModule, NbLayoutModule, NbSelectModule, NbUserModule } from '@nebular/theme';
 import { ReactiveFormsModule } from '@angular/forms';
 import { SharedModule } from '../shared/shared.module';
 
@@ -14,6 +14,7 @@ import { SharedModule } from '../shared/shared.module';
   ],
   imports: [
     CommonModule,
+    NbLayoutModule,
     NbCardModule,
     ReactiveFormsModule,
     NbInputModule,

@@ -40,13 +40,12 @@ export class ProfileComponent {
     switchMap(user => {
       this.form.patchValue({
         uid: user.getPayload().user_id,
+        email: user.getPayload().email,
       });
       return this.authService.getUser(user.getPayload().user_id);
     }),
     tap((user) => {
-      console.log(user);
       this.form.patchValue(user);
-      console.log(this.form.getRawValue())
     })
   );
 

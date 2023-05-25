@@ -1,75 +1,87 @@
-<nb-card>
-  <form *ngIf="{user: user$ | async} as user" class="profile-form" [formGroup]="form" (submit)="updateUser(form)">
-    <div class="profile-image">
-      <nb-user [picture]="form.value.avatar_urls ? (form.value.avatar_urls[0] | mediaUrl | async) || '' : ''"  showName="false"></nb-user>
-      <button nbButton status="primary" outline type="button" class="profile-uplaod-image-button">
-        <input type="file" (change)="uploadFile($event)" />
-        Загрузить фото
-      </button>
-    </div>
-    <div class="profile-block">
-      <div class="form-group">
-        <label for="first_name">
-          Имя
-        </label>
-        <input name="first_name"
-          [status]="form.get('first_name')?.touched ? (form.get('first_name')?.invalid  ? 'danger' : 'success') : 'basic'"
-          nbInput
-          placeholder="Имя"
-          formControlName="first_name"
-        />
-      </div>
-      <div class="form-group">
-        <label for="last_name">
-          Фамилия
-        </label>
-        <input name="last_name" [status]="form.get('last_name')?.touched ? (form.get('last_name')?.invalid  ? 'danger' : 'success') : 'basic'" nbInput placeholder="Фамилия" formControlName="last_name" />
-      </div>
-      <div class="form-group">
-        <label for="middle_name">
-          Отчество
-        </label>
-        <input name="middle_name" nbInput placeholder="Отчество" formControlName="middle_name" />
-      </div>
-      <div class="form-group">
-        <label for="phone">
-          Телефон
-        </label>
-        <input nbInput placeholder="Телефон" [status]="form.get('phone')?.touched ? (form.get('phone')?.invalid  ? 'danger' : 'success') : 'basic'" name="phone" formControlName="phone" />
-      </div>
-      <div class="form-group">
-        <label for="email">
-          E-mail
-        </label>
-        <input nbInput placeholder="E-mail" [status]="form.get('email')?.touched ? (form.get('email')?.invalid  ? 'danger' : 'success') : 'basic'" name="email" formControlName="email" />
-      </div>
-      <div class="form-group">
-        <label for="gender">
-          Пол
-        </label>
-        <nb-select placeholder="Выберите пол" name="gender" [status]="form.get('gender')?.touched ? (form.get('gender')?.invalid  ? 'danger' : 'success') : 'basic'" formControlName="gender">
-          <nb-option value="male">М</nb-option>
-          <nb-option value="female">Ж</nb-option>
-        </nb-select>
-      </div>
-      <div class="form-group">
-        <label for="description">
-          Описание
-        </label>
-        <textarea nbInput placeholder="Описание" name="description" formControlName="description"></textarea>
-      </div>
-      <div class="form-group">
-        <label for="address">
-          Адрес
-        </label>
-        <textarea nbInput placeholder="Адрес" [status]="form.get('address')?.touched ? (form.get('address')?.invalid  ? 'danger' : 'success') : 'basic'" name="address" formControlName="address"></textarea>
-      </div>
-      <nb-checkbox formControlName="is_teacher">Преподаватель</nb-checkbox>
-      <nb-checkbox formControlName="is_student">Ученик</nb-checkbox>
-      <nb-checkbox formControlName="is_blocked">Заблокирован</nb-checkbox>
-      <div>
-        <button nbButton status="primary" type="submit" [disabled]="loading">Сохранить</button>
-      </div>
-    </div>
-  </form>
-</nb-card>
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <form *ngIf="{user: user$ | async} as user" class="profile-form" [formGroup]="form" (submit)="updateUser(form)">
+        <div class="profile-image">
+          <nb-user [picture]="form.value.avatar_urls ? (form.value.avatar_urls[0] | mediaUrl | async) || '' : ''"
+            showName="false"></nb-user>
+          <button nbButton status="primary" outline type="button" class="profile-uplaod-image-button">
+            <input type="file" (change)="uploadFile($event)" />
+            Загрузить фото
+          </button>
+        </div>
+        <div class="profile-block">
+          <div class="form-group">
+            <label for="first_name">
+              Имя
+            </label>
+            <input name="first_name"
+              [status]="form.get('first_name')?.touched ? (form.get('first_name')?.invalid  ? 'danger' : 'success') : 'basic'"
+              nbInput placeholder="Имя" formControlName="first_name" />
+          </div>
+          <div class="form-group">
+            <label for="last_name">
+              Фамилия
+            </label>
+            <input name="last_name"
+              [status]="form.get('last_name')?.touched ? (form.get('last_name')?.invalid  ? 'danger' : 'success') : 'basic'"
+              nbInput placeholder="Фамилия" formControlName="last_name" />
+          </div>
+          <div class="form-group">
+            <label for="middle_name">
+              Отчество
+            </label>
+            <input name="middle_name" nbInput placeholder="Отчество" formControlName="middle_name" />
+          </div>
+          <div class="form-group">
+            <label for="phone">
+              Телефон
+            </label>
+            <input nbInput placeholder="Телефон"
+              [status]="form.get('phone')?.touched ? (form.get('phone')?.invalid  ? 'danger' : 'success') : 'basic'"
+              name="phone" formControlName="phone" />
+          </div>
+          <div class="form-group">
+            <label for="email">
+              E-mail
+            </label>
+            <input nbInput placeholder="E-mail"
+              [status]="form.get('email')?.touched ? (form.get('email')?.invalid  ? 'danger' : 'success') : 'basic'"
+              name="email" formControlName="email" />
+          </div>
+          <div class="form-group">
+            <label for="gender">
+              Пол
+            </label>
+            <nb-select placeholder="Выберите пол" name="gender"
+              [status]="form.get('gender')?.touched ? (form.get('gender')?.invalid  ? 'danger' : 'success') : 'basic'"
+              formControlName="gender">
+              <nb-option value="male">М</nb-option>
+              <nb-option value="female">Ж</nb-option>
+            </nb-select>
+          </div>
+          <div class="form-group">
+            <label for="description">
+              Описание
+            </label>
+            <textarea nbInput placeholder="Описание" name="description" formControlName="description"></textarea>
+          </div>
+          <div class="form-group">
+            <label for="address">
+              Адрес
+            </label>
+            <textarea nbInput placeholder="Адрес"
+              [status]="form.get('address')?.touched ? (form.get('address')?.invalid  ? 'danger' : 'success') : 'basic'"
+              name="address" formControlName="address"></textarea>
+          </div>
+          <nb-checkbox formControlName="is_teacher">Преподаватель</nb-checkbox>
+          <nb-checkbox formControlName="is_student">Ученик</nb-checkbox>
+          <nb-checkbox formControlName="is_blocked">Заблокирован</nb-checkbox>
+          <div>
+            <button nbButton status="primary" type="submit" [disabled]="loading">Сохранить</button>
+          </div>
+        </div>
+      </form>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>

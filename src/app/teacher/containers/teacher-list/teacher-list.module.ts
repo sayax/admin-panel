@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { TeacherListComponent } from './teacher-list.component';
 import { RouterModule } from '@angular/router';
-import { NbButtonModule, NbCardModule, NbDialogModule, NbIconModule, NbInputModule, NbListModule, NbSelectModule, NbTooltipModule, NbUserModule } from '@nebular/theme';
+import { NbButtonModule, NbLayoutModule, NbCardModule, NbDialogModule, NbIconModule, NbInputModule, NbListModule, NbSelectModule, NbTooltipModule, NbUserModule } from '@nebular/theme';
 import { SharedModule } from 'src/app/shared/shared.module';
 import { ReactiveFormsModule } from '@angular/forms';
 
@@ -14,6 +14,7 @@ import { ReactiveFormsModule } from '@angular/forms';
   ],
   imports: [
     CommonModule,
+    NbLayoutModule,
     NbListModule,
     NbCardModule,
     NbUserModule,
