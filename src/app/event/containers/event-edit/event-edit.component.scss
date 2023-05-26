@@ -1,0 +1,51 @@
+.form {
+  --list-item-divider-width: 2px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 1.5rem;
+  border-bottom: var(--list-item-divider-width) var(--list-item-divider-style) var(--list-item-divider-color);
+  margin-bottom: 1.5rem;
+}
+
+.form-group {
+  flex: 0 calc(50% - 10px);
+  margin-bottom: 10px;
+
+  nb-date-timepicker {
+    display: none;
+  }
+}
+
+.event-row {
+  column-gap: 6px;
+  align-items: center;
+
+  &:first-child {
+    --list-item-divider-width: 0;
+  }
+}
+
+.event-cell {
+  width: calc(100% / 3 - 5px);
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+
+  &:last-child {
+    flex-shrink: 0;
+    width: 40px;
+  }
+
+  button {
+    margin-bottom: 4px;
+  }
+}
+
+.event-button {
+  margin-left: auto;
+}
+
+nb-card-footer {
+  display: flex;
+  justify-content: space-between;
+}

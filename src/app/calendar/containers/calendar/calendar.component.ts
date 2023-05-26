@@ -1,14 +1,10 @@
 import { Component, HostListener, OnInit, TemplateRef, inject } from '@angular/core';
-import { CalendarDateFormatter, CalendarEvent, CalendarEventAction, CalendarEventTitleFormatter, CalendarView } from 'angular-calendar';
+import { CalendarDateFormatter, CalendarEvent, CalendarEventTitleFormatter, CalendarView } from 'angular-calendar';
 import { CalendarService } from '../../services/calendar.service';
 import { CustomEventTitleFormatter, DateFormatterService } from '../../services/date-formatter.service';
-import { Observable, map } from 'rxjs';
+import { Observable } from 'rxjs';
 import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { colors } from '../../utils/colors';
 import { isSameDay, isSameMonth } from 'date-fns';
-import { TeacherService } from 'src/app/teacher/services/teacher.service';
-import { TeacherDTO } from 'src/app/backend/model/teacher';
 
 @Component({
   selector: 'app-calendar',

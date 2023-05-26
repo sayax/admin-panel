@@ -1,1 +1,133 @@
-<p>event-edit works!</p>
+<nb-layout>
+  <nb-layout-column *ngIf="{event: event$ | async, eventSchedules: eventSchedules$ | async} as all">
+    <nb-card>
+      <nb-card-body>
+        <form [formGroup]="form" class="form" (submit)="saveEvent(form)">
+          <div class="form-group">
+            <label for="title">Название</label>
+            <input name="title" nbInput formControlName="title">
+          </div>
+          <div class="form-group">
+            <label for="teacher_uids">Преподаватели</label>
+            <nb-select multiple placeholder="Выберите преподавателей" name="teacher_uids"
+              [status]="form.get('teacher_uids')?.touched ? (form.get('teacher_uids')?.invalid  ? 'danger' : 'success') : 'basic'"
+              formControlName="teacher_uids">
+              <nb-option *ngFor="let user of users$ | async" [value]="user.uid">{{ user.first_name }}
+                {{user.last_name}}</nb-option>
+            </nb-select>
+          </div>
+          <div class="form-group">
+            <label for="start_date">Начало</label>
+            <ng-container *ngIf="!isMobile; else startDate">
+              <input name="start_date" nbInput placeholder="yyyy-mm-dd HH:mm" [nbDatepicker]="startDatePicker"
+                formControlName="start_date">
+              <nb-date-timepicker #startDatePicker singleColumn [step]="30"></nb-date-timepicker>
+            </ng-container>
+            <ng-template #startDate>
+              <input name="start_date" nbInput placeholder="yyyy-mm-dd HH:mm"
+                formControlName="start_date">
+            </ng-template>
+          </div>
+          <div class="form-group">
+            <label for="end_date">Окончание</label>
+            <ng-container *ngIf="!isMobile; else endDate">
+              <input name="end_date" nbInput placeholder="yyyy-mm-dd HH:mm" [nbDatepicker]="endDatePicker"
+                formControlName="end_date">
+              <nb-date-timepicker #endDatePicker singleColumn [step]="30"></nb-date-timepicker>
+            </ng-container>
+            <ng-template #endDate>
+              <input name="end_date" nbInput placeholder="yyyy-mm-dd HH:mm"
+                formControlName="end_date">
+            </ng-template>
+          </div>
+          <div class="form-group">
+            <label for="colors">Цвет</label>
+            <nb-select placeholder="Выберите цвет" name="colors"
+              [status]="form.get('colors')?.touched ? (form.get('colors')?.invalid  ? 'danger' : 'success') : 'basic'"
+              formControlName="colors">
+              <nb-option *ngFor="let color of colorOptions" [value]="color">{{ color }}</nb-option>
+            </nb-select>
+          </div>
+          <div class="form-group">
+            <label for="colors">Статус</label>
+            <nb-checkbox formControlName="is_active">Активен</nb-checkbox>
+          </div>
+          <button nbButton status="primary" type="submit" class="event-button" [disabled]="loading">Сохранить</button>
+        </form>
+        <nb-list class="event-table">
+          <nb-list-item class="event-row">
+            <h4>Расписание</h4>
+            <button nbButton status="primary" outline type="button" class="event-button" (click)="openDialog(scheduleDialog)">Добавить</button>
+          </nb-list-item>
+          <nb-list-item class="event-row">
+            <div class="event-cell">Дата начала</div>
+            <div class="event-cell">Дата окончания</div>
+            <div class="event-cell">Статус</div>
+            <div class="event-cell"></div>
+          </nb-list-item>
+          <nb-list-item *ngFor="let schedule of eventSchedules$ | async" class="event-row">
+            <div class="event-cell" *ngIf="schedule.start_date; else empty">{{ schedule.start_date.toMillis() | date: 'dd.MM.yyyy HH:mm' }}</div>
+            <div class="event-cell" *ngIf="schedule.end_date; else empty">{{ schedule.end_date.toMillis() | date: 'dd.MM.yyyy HH:mm' }}</div>
+            <div class="event-cell">
+              {{ schedule.is_active ? 'Активен' : 'Деактивирован' }}
+              {{ schedule.start_date.toMillis() > today[0]  && schedule.start_date.toMillis() < today[1] ? '(Сегодня)' : '' }}
+            </div>
+            <div class="event-cell">
+              <button type="button" *ngIf="!schedule.is_active" [disabled]="loading" nbButton (click)="updateScheduleStatus(form.value.uid, schedule, true)"><nb-icon icon="edit-outline"></nb-icon></button>
+              <button type="button" *ngIf="schedule.is_active" [disabled]="loading" nbButton (click)="updateScheduleStatus(form.value.uid, schedule, false)"><nb-icon icon="trash-outline"></nb-icon></button>
+            </div>
+          </nb-list-item>
+          <ng-template #empty>
+            <div class="event-cell"></div>
+          </ng-template>
+        </nb-list>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>
+
+<ng-template #scheduleDialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Добавить в расписание</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="scheduleForm">
+        <div class="form-group">
+          <label for="start_date">Начало</label>
+          <ng-container *ngIf="!isMobile; else startDate">
+            <input name="start_date" nbInput placeholder="yyyy-mm-dd HH:mm" [nbDatepicker]="startDatePicker"
+              formControlName="start_date">
+            <nb-date-timepicker #startDatePicker singleColumn [step]="30"></nb-date-timepicker>
+          </ng-container>
+          <ng-template #startDate>
+            <input name="start_date" nbInput placeholder="yyyy-mm-dd HH:mm"
+              formControlName="start_date">
+          </ng-template>
+        </div>
+        <div class="form-group">
+          <label for="end_date">Окончание</label>
+          <ng-container *ngIf="!isMobile; else endDate">
+            <input name="end_date" nbInput placeholder="yyyy-mm-dd HH:mm" [nbDatepicker]="endDatePicker"
+              formControlName="end_date">
+            <nb-date-timepicker #endDatePicker singleColumn [step]="30"></nb-date-timepicker>
+          </ng-container>
+          <ng-template #endDate>
+            <input name="end_date" nbInput placeholder="yyyy-mm-dd HH:mm"
+              formControlName="end_date">
+          </ng-template>
+        </div>
+        <div class="form-group">
+          <label for="days">Дни</label>
+          <nb-select multiple placeholder="Выберите дни" name="days"
+            [status]="form.get('days')?.touched ? (form.get('days')?.invalid  ? 'danger' : 'success') : 'basic'"
+            formControlName="days">
+            <nb-option *ngFor="let day of dayOptions" [value]="day.value">{{ day.title }}</nb-option>
+          </nb-select>
+        </div>
+      </form>
+    </nb-card-body>
+    <nb-card-footer class="footer">
+      <button nbButton (click)="ref.close()">Отмена</button>
+      <button nbButton status="primary" [disabled]="loading" (click)="addSchedule(form.value.uid, scheduleForm)">Сохранить</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>

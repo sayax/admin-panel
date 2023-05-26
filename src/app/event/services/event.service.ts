@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { NbAuthService } from '@nebular/auth';
 import { Observable, switchMap } from 'rxjs'
-import { ICalendarEvent } from 'src/app/backend/model/event';
+import { ICalendarEvent, IEventSchedule } from 'src/app/backend/model/event';
 import { EventsApiService } from 'src/app/backend/services/events-api.service';
 
 @Injectable({
@@ -30,5 +30,21 @@ export class EventService {
 
   removeEvent(event: Partial<ICalendarEvent>): Observable<void> {
     return this.eventApiService.removeEvent(event);
+  }
+
+  getEvent(uid: string): Observable<ICalendarEvent> {
+    return this.eventApiService.getEvent(uid);
+  }
+
+  getEventSchedules(uid: string): Observable<IEventSchedule[]> {
+    return this.eventApiService.getEventSchedules(uid);
+  }
+
+  updateEventSchedule(eventUID: string, schedule: Partial<IEventSchedule>): Observable<void> {
+    return this.eventApiService.updateEventSchedule(eventUID, schedule);
+  }
+
+  addEventSchedules(eventUID: string, schedule: Pick<ICalendarEvent, 'start_date' | 'end_date' | 'days'>): Observable<string> {
+    return this.eventApiService.addEventSchedules(eventUID, schedule);
   }
 }

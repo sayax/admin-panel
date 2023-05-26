@@ -1,7 +1,7 @@
 import { Injectable, inject } from '@angular/core';
 import { Firestore, Timestamp, addDoc, collection, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where, writeBatch } from '@angular/fire/firestore';
 import { Collection } from '../model/collections';
-import { Observable, forkJoin, from, map, switchMap, throwError } from 'rxjs';
+import { Observable, forkJoin, from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
 import { ICalendarEvent, IEventSchedule } from '../model/event';
 
 @Injectable({
@@ -113,6 +113,59 @@ export class EventsApiService {
       is_active: false,
       updated_on: event.updated_on,
     }));
+  }
+
+  getEvent(uid: string): Observable<ICalendarEvent> {
+    const ref = doc(this.eventsCollection, uid);
+    return from(getDoc(ref)).pipe(
+      mergeMap(data => data.exists() ? of(data) : throwError(() => new Error('Event not found'))),
+      map(data => data.data() as ICalendarEvent),
+    );
+  }
+
+  getEventSchedules(eventUID: string): Observable<IEventSchedule[]> {
+    const scheduleCollection = collection(this.firestore, Collection.EVENTS, eventUID, Collection.EVENT_SCHEDULES);
+    const scheduleQuery = query(scheduleCollection, orderBy('start_date'));
+    return from(getDocs(scheduleQuery)).pipe(
+      map(data => data.docs.map(doc => ({ ...doc.data(), uid: doc.id } as IEventSchedule))),
+    );
+  }
+
+  updateEventSchedule(eventUID: string, schedule: Partial<IEventSchedule>): Observable<void> {
+    if (!eventUID || !schedule.uid) {
+      return throwError(() => new Error('ID is missing'));
+    }
+    const scheduleCollection = collection(this.firestore, Collection.EVENTS, eventUID, Collection.EVENT_SCHEDULES);
+    const ref = doc(scheduleCollection, schedule.uid);
+    return from(getDoc(ref)).pipe(
+      switchMap(doc => {
+        if (doc.exists()) {
+          return from(updateDoc(ref, schedule))
+        }
+        return from(setDoc(ref, schedule))
+      }),
+    )
+  }
+
+  addEventSchedules(eventUID: string, schedule: Pick<ICalendarEvent, 'start_date' | 'end_date' | 'days'>): Observable<string> {
+    if (!eventUID) {
+      return throwError(() => new Error('ID is missing'));
+    }
+    const start_time = [schedule.start_date.toDate().getHours(), schedule.start_date.toDate().getMinutes()];
+    const end_time = [schedule.end_date.toDate().getHours(), schedule.end_date.toDate().getMinutes()];
+    const schedules: Partial<IEventSchedule>[] = this.getDateList(schedule.start_date, schedule.end_date, schedule.days).map(currentDate => {
+      return {
+        is_active: true,
+        start_date: Timestamp.fromMillis(currentDate.setHours(start_time[0], start_time[1])),
+        end_date: Timestamp.fromMillis(currentDate.setHours(end_time[0], end_time[1])),
+      }
+    });
+    return forkJoin([
+      this.addSchedules(eventUID, schedules),
+      this.updateEvent({ uid: eventUID, end_date: schedule.end_date }),
+    ]).pipe(
+      map(() => eventUID),
+    )
   }
 
   private getDateList(start_date: Timestamp, end_date: Timestamp, days: number[]): Date[] {

@@ -5,15 +5,15 @@ import { CalendarDateFormatter, CalendarEvent, CalendarEventTitleFormatter, Date
 @Injectable()
 export class DateFormatterService extends CalendarDateFormatter {
   public override monthViewColumnHeader({ date, locale }: DateFormatterParams): string {
-    return formatDate(date, 'EEEE', 'en');
+    return formatDate(date, 'EEEE', 'ru');
   }
 
   public override dayViewHour({ date, locale }: DateFormatterParams): string {
-    return formatDate(date, 'HH:mm', 'en');
+    return formatDate(date, 'HH:mm', 'ru');
   }
 
   public override weekViewHour({ date, locale }: DateFormatterParams): string {
-    return this.dayViewHour({ date, locale: 'en' });
+    return this.dayViewHour({ date, locale: locale });
   }
 }
 

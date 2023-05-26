@@ -27,7 +27,6 @@ export class EventListComponent {
   private ref!: NbDialogRef<any>;
   form: FormGroup = this.formBuilder.group({
     uid: [''],
-    allDay: [false],
     colors: ['', Validators.required],
     start_date: ['', Validators.required],
     end_date: ['', Validators.required],
