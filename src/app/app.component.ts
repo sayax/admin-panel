@@ -21,6 +21,11 @@ export class AppComponent {
       pathMatch: 'full',
     },
     {
+      title: 'События',
+      link: '/event',
+      pathMatch: 'prefix',
+    },
+    {
       title: 'Календарь',
       link: '/calendar',
       pathMatch: 'full',

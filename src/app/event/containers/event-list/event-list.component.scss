@@ -1,0 +1,41 @@
+:host {
+  --button-filled-basic-background-color: transparent;
+  --button-filled-basic-hover-background-color: transparent;
+  --button-filled-basic-focus-background-color: transparent;
+}
+
+.form-group {
+  margin-bottom: 0.625rem;
+}
+
+nb-base-calendar {
+  nb-card-body {
+    flex-direction: column;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  nb-date-timepicker {
+    display: none;
+  }
+}
+
+.event-row {
+  column-gap: 6px;
+  align-items: center;
+}
+
+.event-cell {
+  width: calc(100% / 8 - 5px);
+  text-overflow: ellipsis;
+  overflow-x: hidden;
+
+  &:last-child {
+    flex-shrink: 0;
+    width: 40px;
+  }
+
+  button {
+    margin-bottom: 4px;
+  }
+}

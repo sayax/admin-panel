@@ -13,7 +13,7 @@ export class DateFormatterService extends CalendarDateFormatter {
   }
 
   public override weekViewHour({ date, locale }: DateFormatterParams): string {
-    return this.dayViewHour({ date, locale });
+    return this.dayViewHour({ date, locale: 'en' });
   }
 }
 

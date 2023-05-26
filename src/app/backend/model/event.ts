@@ -7,7 +7,8 @@ export interface ICalendarEvent {
   created_on: Timestamp;
   updated_on: Timestamp;
   start_date: Timestamp;
-  end_date?: Timestamp;
+  days: number[];
+  end_date: Timestamp;
   meta?: {
     type?: CalendarType;
   };
@@ -16,6 +17,13 @@ export interface ICalendarEvent {
   teacher_uids: string[];
   title: string;
   is_active: boolean;
+}
+
+export interface IEventSchedule {
+  start_date: Timestamp;
+  end_date: Timestamp;
+  is_active: boolean;
+  uid: string;
 }
 
 export enum CalendarColor {

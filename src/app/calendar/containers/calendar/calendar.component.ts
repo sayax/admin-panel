@@ -27,10 +27,8 @@ import { TeacherDTO } from 'src/app/backend/model/teacher';
 })
 export class CalendarComponent implements OnInit {
   private calendarService = inject(CalendarService);
-  private teacherService = inject(TeacherService);
   private dialogService = inject(NbDialogService);
   private toastr = inject(NbToastrService);
-  private formBuilder = inject(FormBuilder);
 
   private ref!: NbDialogRef<any>;
   loading = false;
@@ -41,33 +39,8 @@ export class CalendarComponent implements OnInit {
 
   viewDate: Date = new Date();
   view: CalendarView = CalendarView.Month;
-  actions: CalendarEventAction[] = [
-    {
-      label: 'Удалить',
-      a11yLabel: 'Удалить',
-      onClick: ({ event }: { event: CalendarEvent }): void => {
-        this.deleteEvent(event);
-      },
-    },
-  ];
-  colorOptions = Object.keys(colors);
-
-  form: FormGroup = this.formBuilder.group({
-    uid: [''],
-    allDay: [false],
-    colors: ['', Validators.required],
-    start_date: ['', Validators.required],
-    end_date: [''],
-    meta: this.formBuilder.group({
-      type: ['info'],
-    }),
-    title: ['', Validators.required],
-    teacher_uids: [[], Validators.required],
-    is_active: [true, Validators.required],
-  })
 
   events$!: Observable<CalendarEvent[]>;
-  users$!: Observable<TeacherDTO[]>;
   selectedEvent!: CalendarEvent;
 
 
@@ -83,17 +56,7 @@ export class CalendarComponent implements OnInit {
   }
 
   getData() {
-    this.events$ = this.calendarService.getEvents().pipe(
-      map(events => events.map(event => ({ ...event, actions: this.actions })))
-    );
-    this.users$ = this.teacherService.getList();
-  }
-
-  deleteEvent(event: CalendarEvent) {
-    this.calendarService.removeEvent({ uid: `${event.id}` }).subscribe(() => {
-      this.toastr.show('Событие удалено', 'Данные сохранены', { status: 'success' });
-      this.getData();
-    });
+    this.events$ = this.calendarService.getEvents();
   }
 
   selectView(event: CalendarView) {
@@ -104,22 +67,6 @@ export class CalendarComponent implements OnInit {
     this.ref = this.dialogService.open(dialog, {
       context,
     });
-  }
-
-  addEvent(form: FormGroup) {
-    this.calendarService.addEvent(form.value).subscribe({
-      complete: () => {
-        this.toastr.show('Событие добавлено', 'Данные сохранены', { status: 'success' });
-        this.loading = false;
-        this.ref.close();
-        this.getData();
-      },
-      error: (error) => {
-        this.toastr.show(error?.message, 'Произошла ошибка', { status: 'error' });
-        console.log('error', error);
-        this.loading = false;
-      },
-    })
   }
 
   dayClicked({ date, events }: { date: Date; events: CalendarEvent[] }): void {

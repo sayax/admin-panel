@@ -1,5 +1,7 @@
-import { NgModule } from '@angular/core';
+import { NgModule, LOCALE_ID } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import localeRu from '@angular/common/locales/ru';
+import localeKk from '@angular/common/locales/kk';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +13,7 @@ import { provideFirestore, getFirestore } from '@angular/fire/firestore';
 import { provideFunctions, getFunctions } from '@angular/fire/functions';
 import { provideStorage, getStorage } from '@angular/fire/storage';
 import { NoopAnimationsModule } from '@angular/platform-browser/animations';
-import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbIconModule, NbButtonModule, NbMenuModule, NbUserModule, NbToastrModule, NbGlobalPositionStrategy, NbGlobalPhysicalPosition, NbDialogModule, NbDatepickerModule, NbTimepickerModule } from '@nebular/theme';
+import { NbThemeModule, NbLayoutModule, NbSidebarModule, NbIconModule, NbButtonModule, NbMenuModule, NbUserModule, NbToastrModule, NbGlobalPositionStrategy, NbGlobalPhysicalPosition, NbDialogModule, NbDatepickerModule, NbTimepickerModule, NbNativeDateService } from '@nebular/theme';
 import { NbEvaIconsModule } from '@nebular/eva-icons';
 import { HeaderComponent } from './shared/header/header.component';
 import { NbAuthModule } from '@nebular/auth';
@@ -20,6 +22,10 @@ import { FIREBASE_OPTIONS } from '@angular/fire/compat';
 import { SharedModule } from './shared/shared.module';
 import { CalendarModule, DateAdapter } from 'angular-calendar';
 import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
+import { registerLocaleData } from '@angular/common';
+
+registerLocaleData(localeRu, 'ru');
+registerLocaleData(localeKk);
 
 @NgModule({
   declarations: [
@@ -124,6 +130,7 @@ import { adapterFactory } from 'angular-calendar/date-adapters/date-fns';
   ],
   providers: [
     { provide: FIREBASE_OPTIONS, useValue: environment.firebase },
+    { provide: LOCALE_ID, useValue: 'ru' },
   ],
   bootstrap: [AppComponent]
 })

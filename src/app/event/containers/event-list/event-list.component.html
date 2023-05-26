@@ -1,0 +1,109 @@
+<nb-layout>
+  <nb-layout-column>
+    <nb-card>
+      <nb-card-header>
+        <button nbButton status="primary" type="button" (click)="openDialog(createDialog)">Добавить</button>
+      </nb-card-header>
+      <nb-card-body>
+        <nb-list class="event-table">
+          <nb-list-item class="event-row">
+            <div class="event-cell">UID</div>
+            <div class="event-cell">Название</div>
+            <div class="event-cell">Статус</div>
+            <div class="event-cell">Кто</div>
+            <div class="event-cell">Дата создания</div>
+            <div class="event-cell">Дата обновления</div>
+            <div class="event-cell">Начало события</div>
+            <div class="event-cell">Окончание события</div>
+            <div class="event-cell"></div>
+          </nb-list-item>
+          <nb-list-item *ngFor="let event of events$ | async" class="event-row">
+            <div class="event-cell">{{ event.uid }}</div>
+            <div class="event-cell">{{ event.title }}</div>
+            <div class="event-cell">{{ event.is_active ? 'Активен' : 'Деактивирован' }}</div>
+            <div class="event-cell" *ngIf="event.owner_uid | user | async as user; else empty">{{ user.first_name }} {{ user.last_name }}</div>
+            <div class="event-cell" *ngIf="event.created_on; else empty">{{ event.created_on.toMillis() | date: 'dd MM yyyy HH:mm' }}</div>
+            <div class="event-cell" *ngIf="event.updated_on; else empty">{{ event.updated_on.toMillis() | date: 'dd MM yyyy HH:mm' }}</div>
+            <div class="event-cell" *ngIf="event.start_date; else empty">{{ event.start_date.toMillis() | date: 'dd MM yyyy HH:mm' }}</div>
+            <div class="event-cell" *ngIf="event.end_date; else empty">{{ event.end_date.toMillis() | date: 'dd MM yyyy HH:mm' }}</div>
+            <div class="event-cell">
+              <button type="button" nbButton [routerLink]="['../', event.uid]"><nb-icon icon="edit-outline"></nb-icon></button>
+              <button type="button" nbButton (click)="deleteEvent(event)"><nb-icon icon="trash-outline"></nb-icon></button>
+            </div>
+          </nb-list-item>
+          <ng-template #empty>
+            <div class="event-cell"></div>
+          </ng-template>
+        </nb-list>
+      </nb-card-body>
+    </nb-card>
+  </nb-layout-column>
+</nb-layout>
+
+<ng-template #createDialog let-data let-ref="dialogRef">
+  <nb-card>
+    <nb-card-header>Добавить в расписание</nb-card-header>
+    <nb-card-body>
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label for="title">Название</label>
+          <input name="title" nbInput formControlName="title">
+        </div>
+        <div class="form-group">
+          <label for="teacher_uids">Преподаватели</label>
+          <nb-select multiple placeholder="Выберите преподавателей" name="teacher_uids"
+            [status]="form.get('teacher_uids')?.touched ? (form.get('teacher_uids')?.invalid  ? 'danger' : 'success') : 'basic'"
+            formControlName="teacher_uids">
+            <nb-option *ngFor="let user of users$ | async" [value]="user.uid">{{ user.first_name }}
+              {{user.last_name}}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <label for="colors">Цвет</label>
+          <nb-select placeholder="Выберите цвет" name="colors"
+            [status]="form.get('colors')?.touched ? (form.get('colors')?.invalid  ? 'danger' : 'success') : 'basic'"
+            formControlName="colors">
+            <nb-option *ngFor="let color of colorOptions" [value]="color">{{ color }}</nb-option>
+          </nb-select>
+        </div>
+        <div class="form-group">
+          <label for="start_date">Начало</label>
+          <ng-container *ngIf="!isMobile; else startDate">
+            <input name="start_date" nbInput placeholder="yyyy-mm-dd HH:mm" [nbDatepicker]="startDatePicker"
+              formControlName="start_date">
+            <nb-date-timepicker #startDatePicker singleColumn [step]="30"></nb-date-timepicker>
+          </ng-container>
+          <ng-template #startDate>
+            <input name="start_date" nbInput placeholder="yyyy-mm-dd HH:mm"
+              formControlName="start_date">
+          </ng-template>
+        </div>
+        <div class="form-group">
+          <label for="end_date">Окончание</label>
+          <ng-container *ngIf="!isMobile; else endDate">
+            <input name="end_date" nbInput placeholder="yyyy-mm-dd HH:mm" [nbDatepicker]="endDatePicker"
+              formControlName="end_date">
+            <nb-date-timepicker #endDatePicker singleColumn [step]="30"></nb-date-timepicker>
+          </ng-container>
+          <ng-template #endDate>
+            <input name="end_date" nbInput placeholder="yyyy-mm-dd HH:mm"
+              formControlName="end_date">
+          </ng-template>
+        </div>
+        <div class="form-group">
+          <label for="days">Дни</label>
+          <nb-select multiple placeholder="Выберите дни" name="days"
+            [status]="form.get('days')?.touched ? (form.get('days')?.invalid  ? 'danger' : 'success') : 'basic'"
+            formControlName="days">
+            <nb-option *ngFor="let day of dayOptions" [value]="day.value">{{ day.title }}</nb-option>
+          </nb-select>
+        </div>
+        <nb-checkbox formControlName="allDay">Весь день</nb-checkbox>
+      </form>
+    </nb-card-body>
+    <nb-card-footer class="footer">
+      <button nbButton (click)="ref.close()">Отмена</button>
+      <button nbButton status="primary" [disabled]="loading" (click)="addEvent(form)">Сохранить</button>
+    </nb-card-footer>
+  </nb-card>
+</ng-template>
