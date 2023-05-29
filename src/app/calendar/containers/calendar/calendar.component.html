@@ -13,10 +13,10 @@
           [activeDayIsOpen]="activeDayIsOpen" [events]="(events$ | async) || []" (dayClicked)="dayClicked($event.day)"
           (eventClicked)="openDialog(showInfo, $event.event)">
         </mwl-calendar-month-view>
-        <mwl-calendar-week-view *ngSwitchCase="'week'" precision="minutes" [viewDate]="viewDate"
+        <mwl-calendar-week-view *ngSwitchCase="'week'" [dayStartHour]="9" [dayEndHour]="23" precision="minutes" [viewDate]="viewDate"
           [events]="(events$ | async) || []" (eventClicked)="openDialog(showInfo, $event.event)">
         </mwl-calendar-week-view>
-        <mwl-calendar-day-view *ngSwitchCase="'day'" precision="minutes" [viewDate]="viewDate"
+        <mwl-calendar-day-view *ngSwitchCase="'day'" [dayStartHour]="9" [dayEndHour]="23" precision="minutes" [viewDate]="viewDate"
           [events]="(events$ | async) || []" (eventClicked)="openDialog(showInfo, $event.event)">
         </mwl-calendar-day-view>
       </nb-card-body>
@@ -49,6 +49,11 @@
             </nb-list-item>
           </nb-list>
         </nb-card-body>
+        <nb-card-footer>
+          <button nbButton status="primary" *ngIf="!data.meta.is_enrolled" outline [disabled]="loading" (click)="entry(data.id)">Записаться</button>
+          <button nbButton status="primary" *ngIf="data.meta.is_enrolled" outline [disabled]="loading" (click)="removeEntry(data.id)">Убрать запись</button>
+          <button nbButton status="primary" class="card-button" (click)="navigate(data.id)">Редактировать</button>
+        </nb-card-footer>
       </nb-card>
     </ng-template>
   </nb-layout-column>

@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { CalendarEvent } from 'angular-calendar';
-import { Observable, map, switchMap } from 'rxjs';
+import { Observable, map, mergeMap, switchMap } from 'rxjs';
 import { ICalendarEvent } from 'src/app/backend/model/event';
 import { colors } from '../utils/colors';
 import { Timestamp } from '@angular/fire/firestore';
@@ -13,15 +13,18 @@ import { EventsApiService } from 'src/app/backend/services/events-api.service';
   providedIn: 'root',
 })
 export class CalendarService {
+  private authService = inject(NbAuthService);
   private eventApiService = inject(EventsApiService);
   private userApiService = inject(UserApiService);
 
   getEvents(): Observable<CalendarEvent[]> {
-    return this.eventApiService.getFilteredEvents().pipe(
-      map(events => {
-        console.log('events', events)
-        return events.map(event => this.convertEventToCalendar(event))
-      }),
+    return this.authService.getToken().pipe(
+      mergeMap(token => this.eventApiService.getFilteredEvents().pipe(
+        map(events => {
+          console.log('events', events)
+          return events.map(event => this.convertEventToCalendar(event, token.getPayload().user_id))
+        }),
+      ))
     );
   }
 
@@ -29,7 +32,25 @@ export class CalendarService {
     return this.userApiService.getUsersInList(uids);
   }
 
-  private convertEventToCalendar(event: ICalendarEvent): CalendarEvent {
+  updateEnrolledParticipants(uid: string): Observable<void> {
+    return this.authService.getToken().pipe(
+      mergeMap(token => this.eventApiService.updateEnrolledParticipants({
+        uid,
+        enrolled_participants: token.getPayload().user_id,
+      }))
+    )
+  }
+
+  removeEnrolledParticipants(uid: string): Observable<void> {
+    return this.authService.getToken().pipe(
+      mergeMap(token => this.eventApiService.removeEnrolledParticipants({
+        uid,
+        enrolled_participants: token.getPayload().user_id,
+      }))
+    )
+  }
+
+  private convertEventToCalendar(event: ICalendarEvent, user_id: string): CalendarEvent {
     return {
       id: event.uid,
       start: new Date(event.start_date.toMillis()),
@@ -41,6 +62,7 @@ export class CalendarService {
       meta: {
         ...event.meta,
         teacher_uids: event.teacher_uids,
+        is_enrolled: !!event.enrolled_participants?.includes(user_id),
       },
     }
   }

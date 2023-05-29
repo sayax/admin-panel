@@ -52,6 +52,10 @@ nb-card-footer {
   justify-content: space-between;
 }
 
+.card-button {
+  margin-left: auto;
+}
+
 @media screen and (max-width: 768px) {
   nb-card-header {
     flex-direction: column;

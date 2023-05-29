@@ -17,6 +17,8 @@ export interface ICalendarEvent {
   teacher_uids: string[];
   title: string;
   is_active: boolean;
+  enrolled_participants: string[];
+  participants: string[];
 }
 
 export interface IEventSchedule {

@@ -5,7 +5,7 @@ import { DAY } from '../../utils/event';
 import { ICalendarEvent, IEventSchedule } from 'src/app/backend/model/event';
 import { EventService } from '../../services/event.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable, switchMap, tap } from 'rxjs';
+import { Observable, catchError, of, switchMap, tap } from 'rxjs';
 import { TeacherService } from 'src/app/teacher/services/teacher.service';
 import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
 import { Timestamp } from '@angular/fire/firestore';
@@ -83,13 +83,21 @@ export class EventEditComponent {
           start_date: new Date(event.start_date.toMillis()),
           end_date: new Date(event.end_date.toMillis()),
         });
-      })
+      }),
+      catchError(() => {
+        this.toastr.danger('Произошла ошибка, попробуйте обновить страницу');
+        return of();
+      }),
     );
     this.eventSchedules$ = this.route.paramMap.pipe(
       switchMap((paramMap: ParamMap) => this.eventService.getEventSchedules(paramMap.get('id') ?? '')),
       tap(schedules => {
         console.log(schedules);
-      })
+      }),
+      catchError(() => {
+        this.toastr.danger('Произошла ошибка, попробуйте обновить страницу');
+        return of();
+      }),
     );
   }
 

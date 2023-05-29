@@ -73,8 +73,7 @@
               {{ schedule.start_date.toMillis() > today[0]  && schedule.start_date.toMillis() < today[1] ? '(Сегодня)' : '' }}
             </div>
             <div class="event-cell">
-              <button type="button" *ngIf="!schedule.is_active" [disabled]="loading" nbButton (click)="updateScheduleStatus(form.value.uid, schedule, true)"><nb-icon icon="edit-outline"></nb-icon></button>
-              <button type="button" *ngIf="schedule.is_active" [disabled]="loading" nbButton (click)="updateScheduleStatus(form.value.uid, schedule, false)"><nb-icon icon="trash-outline"></nb-icon></button>
+              <button type="button" [disabled]="loading" nbButton (click)="updateScheduleStatus(form.value.uid, schedule, !schedule.is_active)"><nb-icon [icon]="(schedule.is_active ? 'trash' : 'edit') + '-outline'"></nb-icon></button>
             </div>
           </nb-list-item>
           <ng-template #empty>

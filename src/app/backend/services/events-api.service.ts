@@ -1,5 +1,5 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, Timestamp, addDoc, collection, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where, writeBatch } from '@angular/fire/firestore';
+import { Firestore, Timestamp, addDoc, arrayRemove, arrayUnion, collection, doc, getDoc, getDocs, orderBy, query, setDoc, updateDoc, where, writeBatch } from '@angular/fire/firestore';
 import { Collection } from '../model/collections';
 import { Observable, forkJoin, from, map, mergeMap, of, switchMap, throwError } from 'rxjs';
 import { ICalendarEvent, IEventSchedule } from '../model/event';
@@ -102,6 +102,54 @@ export class EventsApiService {
         }
         event.created_on = Timestamp.now();
         return from(setDoc(ref, event))
+      }),
+    )
+  }
+
+  updateEnrolledParticipants(event: Pick<ICalendarEvent, 'uid' | 'enrolled_participants'>): Observable<void> {
+    if (!event.uid) {
+      return throwError(() => new Error('ID is missing'));
+    }
+    const ref = doc(this.eventsCollection, event.uid);
+    return from(getDoc(ref)).pipe(
+      switchMap(doc => {
+        const updated_on = Timestamp.now();
+        if (doc.exists()) {
+          return from(updateDoc(ref, {
+            enrolled_participants: arrayUnion(event.enrolled_participants),
+            updated_on,
+          }))
+        }
+        const created_on = Timestamp.now();
+        return from(setDoc(ref, {
+          enrolled_participants: arrayUnion(event.enrolled_participants),
+          updated_on,
+          created_on,
+        }))
+      }),
+    )
+  }
+
+  removeEnrolledParticipants(event: Pick<ICalendarEvent, 'uid' | 'enrolled_participants'>): Observable<void> {
+    if (!event.uid) {
+      return throwError(() => new Error('ID is missing'));
+    }
+    const ref = doc(this.eventsCollection, event.uid);
+    return from(getDoc(ref)).pipe(
+      switchMap(doc => {
+        const updated_on = Timestamp.now();
+        if (doc.exists()) {
+          return from(updateDoc(ref, {
+            enrolled_participants: arrayRemove(event.enrolled_participants),
+            updated_on,
+          }))
+        }
+        const created_on = Timestamp.now();
+        return from(setDoc(ref, {
+          enrolled_participants: arrayRemove(event.enrolled_participants),
+          updated_on,
+          created_on,
+        }))
       }),
     )
   }

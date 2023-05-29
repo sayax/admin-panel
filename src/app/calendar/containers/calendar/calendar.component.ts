@@ -5,6 +5,7 @@ import { CustomEventTitleFormatter, DateFormatterService } from '../../services/
 import { Observable } from 'rxjs';
 import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
 import { isSameDay, isSameMonth } from 'date-fns';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-calendar',
@@ -25,6 +26,7 @@ export class CalendarComponent implements OnInit {
   private calendarService = inject(CalendarService);
   private dialogService = inject(NbDialogService);
   private toastr = inject(NbToastrService);
+  private router = inject(Router);
 
   private ref!: NbDialogRef<any>;
   loading = false;
@@ -77,5 +79,44 @@ export class CalendarComponent implements OnInit {
       }
       this.viewDate = date;
     }
+  }
+
+  entry(uid: string) {
+    this.loading = true;
+    this.calendarService.updateEnrolledParticipants(uid).subscribe({
+      complete: () => {
+        this.toastr.show('Спасибо что записались', 'Данные сохранены', { status: 'success' });
+        this.loading = false;
+        this.ref.close();
+        this.getData();
+      },
+      error: (error) => {
+        this.toastr.show(error?.message, 'Произошла ошибка', { status: 'danger' });
+        console.log('error', error);
+        this.loading = false;
+      },
+    })
+  }
+
+  removeEntry(uid: string) {
+    this.loading = true;
+    this.calendarService.removeEnrolledParticipants(uid).subscribe({
+      complete: () => {
+        this.toastr.show('Вы убрали запись', 'Данные сохранены', { status: 'success' });
+        this.loading = false;
+        this.ref.close();
+        this.getData();
+      },
+      error: (error) => {
+        this.toastr.show(error?.message, 'Произошла ошибка', { status: 'danger' });
+        console.log('error', error);
+        this.loading = false;
+      },
+    })
+  }
+
+  navigate(id: string) {
+    this.ref.close();
+    this.router.navigate(['event', id]);
   }
 }
