@@ -4,6 +4,12 @@
       <nb-card-body>
         <form [formGroup]="form" class="form" (submit)="saveEvent(form)">
           <div class="form-group">
+            <a nbButton status="primary" outline [routerLink]="['..']">Назад</a>
+          </div>
+          <div class="form-group">
+            <button nbButton status="primary" type="submit" class="event-button" [disabled]="loading">Сохранить</button>
+          </div>
+          <div class="form-group">
             <label for="title">Название</label>
             <input name="title" nbInput formControlName="title">
           </div>
@@ -12,7 +18,7 @@
             <nb-select multiple placeholder="Выберите преподавателей" name="teacher_uids"
               [status]="form.get('teacher_uids')?.touched ? (form.get('teacher_uids')?.invalid  ? 'danger' : 'success') : 'basic'"
               formControlName="teacher_uids">
-              <nb-option *ngFor="let user of users$ | async" [value]="user.uid">{{ user.first_name }}
+              <nb-option *ngFor="let user of teachers$ | async" [value]="user.uid">{{ user.first_name }}
                 {{user.last_name}}</nb-option>
             </nb-select>
           </div>
@@ -52,7 +58,17 @@
             <label for="colors">Статус</label>
             <nb-checkbox formControlName="is_active">Активен</nb-checkbox>
           </div>
-          <button nbButton status="primary" type="submit" class="event-button" [disabled]="loading">Сохранить</button>
+          <div class="form-group">
+            <label for="participants">Участники</label>
+            <nb-select multiple placeholder="Выберите участников" name="participants"
+              [status]="form.get('participants')?.touched ? (form.get('participants')?.invalid  ? 'danger' : 'success') : 'basic'"
+              formControlName="participants">
+              <nb-option *ngFor="let user of enrolledParticipants$ | async" [value]="user.uid">{{ user.first_name }}
+                {{user.last_name}} (Запись)</nb-option>
+              <nb-option *ngFor="let user of users$ | async" [value]="user.uid">{{ user.first_name }}
+                {{user.last_name}}</nb-option>
+            </nb-select>
+          </div>
         </form>
         <nb-list class="event-table">
           <nb-list-item class="event-row">

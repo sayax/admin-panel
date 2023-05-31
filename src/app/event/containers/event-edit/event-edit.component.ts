@@ -5,10 +5,11 @@ import { DAY } from '../../utils/event';
 import { ICalendarEvent, IEventSchedule } from 'src/app/backend/model/event';
 import { EventService } from '../../services/event.service';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable, catchError, of, switchMap, tap } from 'rxjs';
+import { Observable, catchError, map, of, switchMap, tap } from 'rxjs';
 import { TeacherService } from 'src/app/teacher/services/teacher.service';
 import { NbDialogRef, NbDialogService, NbToastrService } from '@nebular/theme';
 import { Timestamp } from '@angular/fire/firestore';
+import { ProfileDTO } from 'src/app/backend/model/profile';
 
 @Component({
   selector: 'app-event-edit',
@@ -28,7 +29,9 @@ export class EventEditComponent {
 
   event$!: Observable<ICalendarEvent>;
   eventSchedules$!: Observable<IEventSchedule[]>;
-  users$ = this.teacherService.getList();
+  teachers$ = this.teacherService.getList();
+  enrolledParticipants$!: Observable<ProfileDTO[]>;
+  users$!: Observable<ProfileDTO[]>;
 
   form: FormGroup = this.formBuilder.group({
     uid: ['', Validators.required],
@@ -41,6 +44,8 @@ export class EventEditComponent {
     title: ['', Validators.required],
     teacher_uids: [[], Validators.required],
     is_active: [false, Validators.required],
+    enrolled_participants: [[]],
+    participants: [[]],
   });
 
   scheduleForm: FormGroup = this.formBuilder.group({
@@ -64,12 +69,15 @@ export class EventEditComponent {
   ngOnInit(): void {
     this.calculateRows();
     this.getData();
+    this.calculateToday();
+  }
+
+  calculateToday() {
     const start_date = new Date();
     const end_date = new Date();
     start_date.setHours(0, 0, 0);
     end_date.setHours(23, 59, 59);
     this.today = [start_date.getTime(), end_date.getTime()];
-    console.log(this.today)
     this.cdr.markForCheck();
   }
 
@@ -83,6 +91,7 @@ export class EventEditComponent {
           start_date: new Date(event.start_date.toMillis()),
           end_date: new Date(event.end_date.toMillis()),
         });
+        console.log(this.form.value)
       }),
       catchError(() => {
         this.toastr.danger('Произошла ошибка, попробуйте обновить страницу');
@@ -98,6 +107,29 @@ export class EventEditComponent {
         this.toastr.danger('Произошла ошибка, попробуйте обновить страницу');
         return of();
       }),
+    );
+    this.enrolledParticipants$ = this.form.controls['enrolled_participants'].valueChanges.pipe(
+      switchMap(participants => {
+        if (participants.length) {
+          return this.eventService.getEnrolledUsers(participants);
+        }
+        return of([]);
+      })
+    );
+    this.enrolledParticipants$ = this.form.controls['enrolled_participants'].valueChanges.pipe(
+      switchMap(participants => {
+        if (participants.length) {
+          return this.eventService.getEnrolledUsers(participants);
+        }
+        return of([]);
+      })
+    );
+    this.users$ = this.form.controls['enrolled_participants'].valueChanges.pipe(
+      switchMap((participants: string[]) => {
+        return this.eventService.getUsers().pipe(
+          map(users => users.filter(user => !participants.includes(user.uid)))
+        )
+      })
     );
   }
 

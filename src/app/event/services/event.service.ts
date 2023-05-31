@@ -2,13 +2,16 @@ import { Injectable, inject } from '@angular/core';
 import { NbAuthService } from '@nebular/auth';
 import { Observable, switchMap } from 'rxjs'
 import { ICalendarEvent, IEventSchedule } from 'src/app/backend/model/event';
+import { ProfileDTO } from 'src/app/backend/model/profile';
 import { EventsApiService } from 'src/app/backend/services/events-api.service';
+import { UserApiService } from 'src/app/backend/services/user-api.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EventService {
   private eventApiService = inject(EventsApiService);
+  private userApiService = inject(UserApiService);
   private nbAuthService = inject(NbAuthService);
 
   getEvents(): Observable<ICalendarEvent[]> {
@@ -46,5 +49,13 @@ export class EventService {
 
   addEventSchedules(eventUID: string, schedule: Pick<ICalendarEvent, 'start_date' | 'end_date' | 'days'>): Observable<string> {
     return this.eventApiService.addEventSchedules(eventUID, schedule);
+  }
+
+  getEnrolledUsers(uids: string[]): Observable<ProfileDTO[]> {
+    return this.userApiService.getUsersInList(uids);
+  }
+
+  getUsers(): Observable<ProfileDTO[]> {
+    return this.userApiService.getUsers();
   }
 }
